@@ -28,8 +28,6 @@ public class TicketService {
     PassengerRepository passengerRepository;
 
     public Integer bookTicket(BookTicketEntryDto bookTicketEntryDto) throws Exception {
-        // ...
-
         Optional<Train> optionalTrain = trainRepository.findById(bookTicketEntryDto.getTrainId());
         if (!optionalTrain.isPresent()) {
             throw new RuntimeException("Train doesn't exist");
@@ -49,7 +47,7 @@ public class TicketService {
         }
         int leftSeats = train.getNoOfSeats() - consumedSeats;
         if (leftSeats < bookTicketEntryDto.getNoOfSeats()) {
-            throw new Exception("Less tickets are available");
+            throw new RuntimeException("Less tickets are available");
         }
 
         List<Passenger> passengers = new ArrayList<>();
@@ -82,7 +80,7 @@ public class TicketService {
             }
         }
         if (fromStation == -1 || toStation == -1 || toStation - fromStation <= 0) {
-            throw new Exception("Invalid stations");
+            throw new RuntimeException("Invalid stations");
         }
         int travelCostPerPassenger = (toStation - fromStation) * 300;
         totalFare = travelCostPerPassenger * bookTicketEntryDto.getNoOfSeats();
